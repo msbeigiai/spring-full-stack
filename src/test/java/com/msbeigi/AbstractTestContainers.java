@@ -20,7 +20,6 @@ public abstract class AbstractTestContainers {
 
     protected static final Faker FAKER = new Faker();
 
-
     @BeforeAll
     static void beforeAll() {
         var flyWay = Flyway.configure().dataSource(
