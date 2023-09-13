@@ -3,6 +3,7 @@ package com.msbeigi.journey;
 import com.github.javafaker.Faker;
 import com.msbeigi.customer.Customer;
 import com.msbeigi.customer.CustomerRegistrationRequest;
+import com.msbeigi.customer.CustomerUpdateRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -138,5 +139,76 @@ public class CustomerIntegrationTest {
                 .exchange()
                 .expectStatus()
                 .isNotFound();
+    }
+
+    @Test
+    void canUpdateCustomer() {
+        Faker faker = new Faker();
+
+        var name = faker.name().fullName();
+        var email = faker.name().lastName().toLowerCase() + "_" + UUID.randomUUID() + "@gmail.com";
+        int age = new Random().nextInt(20, 90);
+
+        // create registration request
+        var request = new CustomerRegistrationRequest(name, email, age);
+
+        // send a post request
+        webTestClient.post()
+                .uri(URI)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(request), CustomerRegistrationRequest.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+        // get all customers
+        List<Customer> allCustomers = webTestClient.get()
+                .uri(URI)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBodyList(new ParameterizedTypeReference<Customer>() {
+                })
+                .returnResult()
+                .getResponseBody();
+
+        int id = allCustomers
+                .stream()
+                .filter(customer -> customer.getEmail().equals(email))
+                .map(Customer::getId)
+                .findFirst()
+                .orElseThrow();
+
+        // update customer
+        String newName = "newName";
+        var customerUpdateRequest = new CustomerUpdateRequest(
+                newName, null, null
+        );
+
+        webTestClient.put()
+                .uri(URI + "/{id}", id)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(customerUpdateRequest), CustomerUpdateRequest.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+        // get customer by id
+        Customer updatedCustomer = webTestClient.get()
+                .uri(URI + "/{id}", id)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody(Customer.class)
+                .returnResult()
+                .getResponseBody();
+
+        var expected = new Customer(id, newName, email, age);
+
+        assertThat(updatedCustomer).isEqualTo(expected);
     }
 }

@@ -21,7 +21,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public List<Customer> selectAllCustomers() {
         var sql = """
-                select id, name, email, age from customer
+                select id, name, email, age from customer;
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
     }
@@ -32,7 +32,8 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
                 select id, name, email, age from customer where id = ?;
                 """;
         return jdbcTemplate.query(sql, customerRowMapper, id)
-                .stream().findFirst();
+                .stream()
+                .findFirst();
     }
 
     @Override
@@ -46,21 +47,20 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public boolean existCustomerWithEmail(String email) {
         var sql = """
-                select email from customer where email = ?;
+                select count(id) from customer where email = ?
                 """;
-        String e = jdbcTemplate.queryForObject(sql, String.class, email);
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
 
-        return e != null && e.equals(email);
+        return count != null && count > 0;
     }
 
     @Override
     public void deleteCustomerById(Integer id) {
-        if (!existCustomerById(id))
-            throw new ResourceNotFoundException("customer with id [%s] not found!".formatted(id));
         var sql = """
                 delete from customer where id = ?;
                 """;
-        jdbcTemplate.update(sql, id);
+        int result = jdbcTemplate.update(sql, id);
+        System.out.println("deleted customer = " + result);
     }
 
     @Override
@@ -68,17 +68,26 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
         var sql = """
                 select count(id) from customer where id = ?;
                 """;
-        var count = jdbcTemplate.queryForObject(sql, Integer.class, customerId);
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, customerId);
         return count != null && count > 0;
     }
 
     @Override
-    public void updateCustomer(Customer customer) {
-        var sql = """
-                update customer 
-                set name = ?, email = ?, age = ?
-                where id = ?;
-                """;
-        jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getAge(), customer.getId());
+    public void updateCustomer(Customer update) {
+        if (update.getName() != null) {
+            String sql = "update customer set name = ? where id = ?";
+            int result = jdbcTemplate.update(sql, update.getName(), update.getId());
+            System.out.println("update customer name result = " + result);
+        }
+        if (update.getAge() != null) {
+            String sql = "update customer set age = ? where id = ?";
+            int result = jdbcTemplate.update(sql, update.getAge(), update.getId());
+            System.out.println("update customer age result = " + result);
+        }
+        if (update.getEmail() != null) {
+            String sql = "update customer set email = ? where id = ?";
+            int result = jdbcTemplate.update(sql, update.getEmail(), update.getId());
+            System.out.println("update customer email result = " + result);
+        }
     }
 }
