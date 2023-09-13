@@ -4,11 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class CustomerJPADataAccessServiceTest {
@@ -72,7 +69,7 @@ class CustomerJPADataAccessServiceTest {
         String email = "ali@gmail.com";
 
         // When
-        underTest.existPersonWithEmail(email);
+        underTest.existCustomerWithEmail(email);
 
         // Then
         verify(customerRepository).existsCustomerByEmail(email);

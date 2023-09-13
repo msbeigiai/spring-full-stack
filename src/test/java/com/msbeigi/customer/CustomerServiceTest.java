@@ -1,13 +1,13 @@
 package com.msbeigi.customer;
 
 import com.msbeigi.exception.DuplicateResourceException;
+import com.msbeigi.exception.RequestValidationException;
 import com.msbeigi.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -76,7 +76,7 @@ class CustomerServiceTest {
     void addCustomer() {
         // Given
         String email = "alex@gmail.com";
-        when(customerDao.existPersonWithEmail(email)).thenReturn(false);
+        when(customerDao.existCustomerWithEmail(email)).thenReturn(false);
 
         var request = new CustomerRegistrationRequest(
                 "Alex", email, 22
@@ -102,7 +102,7 @@ class CustomerServiceTest {
     void willThrowWhenEmailExistWhileAddingCustomer() {
         // Given
         String email = "alex@gmail.com";
-        when(customerDao.existPersonWithEmail(email)).thenReturn(true);
+        when(customerDao.existCustomerWithEmail(email)).thenReturn(true);
 
         var request = new CustomerRegistrationRequest(
                 "Alex", email, 22
@@ -121,18 +121,215 @@ class CustomerServiceTest {
     @Test
     void deleteCustomerById() {
         // Given
+        int id = 10;
+
+        when(customerDao.existCustomerById(id)).thenReturn(true);
 
         // When
+        underTest.deleteCustomerById(id);
 
         // Then
+        verify(customerDao).deleteCustomerById(id);
     }
 
     @Test
-    void updateCustomerById() {
+    void willThrowDeleteCustomerByIdNotExist() {
         // Given
+        int id = 10;
+
+        when(customerDao.existCustomerById(id)).thenReturn(false);
 
         // When
+        assertThatThrownBy(() -> underTest.deleteCustomerById(id))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("customer with id [%s] not found.".formatted(id));
 
         // Then
+        verify(customerDao, never()).deleteCustomerById(id);
     }
+
+
+    @Test
+    void canUpdateAllCustomersProperties() {
+        // Given
+        int id = 10;
+        var customer = new Customer(
+                id,
+                "Alex",
+                "alex@gmail.com",
+                22
+        );
+        when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        String newEmail = "updated@gmail.com";
+
+        var updateRequest =
+                new CustomerUpdateRequest("updated", newEmail, 36);
+
+        when(customerDao.existCustomerWithEmail(newEmail)).thenReturn(false);
+
+        // When
+        underTest.updateCustomerById(id, updateRequest);
+
+        // Then
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        verify(customerDao).updateCustomer(customerArgumentCaptor.capture());
+
+        Customer capturedCustomer = customerArgumentCaptor.getValue();
+
+        assertThat(capturedCustomer.getName()).isEqualTo(updateRequest.name());
+        assertThat(capturedCustomer.getEmail()).isEqualTo(updateRequest.email());
+        assertThat(capturedCustomer.getAge()).isEqualTo(updateRequest.age());
+    }
+
+    @Test
+    void canUpdateOnlyCustomerName() {
+        // Given
+        int id = 10;
+        var customer = new Customer(
+                id,
+                "Alex",
+                "alex@gmail.com",
+                22
+        );
+        when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        var updateRequest =
+                new CustomerUpdateRequest("updated", null, null);
+
+        // When
+        underTest.updateCustomerById(id, updateRequest);
+
+        // Then
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        verify(customerDao).updateCustomer(customerArgumentCaptor.capture());
+
+        Customer capturedCustomer = customerArgumentCaptor.getValue();
+
+        assertThat(capturedCustomer.getName()).isEqualTo(updateRequest.name());
+        assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
+        assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
+    }
+
+    @Test
+    void canUpdateOnlyCustomerEmail() {
+        // Given
+        int id = 10;
+        var customer = new Customer(
+                id,
+                "Alex",
+                "alex@gmail.com",
+                22
+        );
+        when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        var newEmail = "updated@gmail.com";
+
+        var updateRequest =
+                new CustomerUpdateRequest(null, newEmail, null);
+
+        when(customerDao.existCustomerWithEmail(newEmail)).thenReturn(false);
+
+        // When
+        underTest.updateCustomerById(id, updateRequest);
+
+        // Then
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        verify(customerDao).updateCustomer(customerArgumentCaptor.capture());
+
+        Customer capturedCustomer = customerArgumentCaptor.getValue();
+
+        assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
+        assertThat(capturedCustomer.getEmail()).isEqualTo(newEmail);
+        assertThat(capturedCustomer.getAge()).isEqualTo(customer.getAge());
+    }
+
+    @Test
+    void canUpdateOnlyCustomerAge() {
+        // Given
+        int id = 10;
+        var customer = new Customer(
+                id,
+                "Alex",
+                "alex@gmail.com",
+                22
+        );
+        when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        int newAge = 44;
+
+        var updateRequest =
+                new CustomerUpdateRequest(null, null, newAge);
+
+        // When
+        underTest.updateCustomerById(id, updateRequest);
+
+        // Then
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        verify(customerDao).updateCustomer(customerArgumentCaptor.capture());
+
+        Customer capturedCustomer = customerArgumentCaptor.getValue();
+
+        assertThat(capturedCustomer.getName()).isEqualTo(customer.getName());
+        assertThat(capturedCustomer.getEmail()).isEqualTo(customer.getEmail());
+        assertThat(capturedCustomer.getAge()).isEqualTo(newAge);
+    }
+
+    @Test
+    void willThrowWhenTryingToUpdateCustomerEmailAlreadyTaken() {
+        // Given
+        int id = 10;
+        var customer = new Customer(
+                id,
+                "Alex",
+                "alex@gmail.com",
+                22
+        );
+        when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        var newEmail = "updated@gmail.com";
+
+        var updateRequest =
+                new CustomerUpdateRequest(null, newEmail, null);
+
+        when(customerDao.existCustomerWithEmail(newEmail)).thenReturn(true);
+
+        // When
+        assertThatThrownBy(() -> underTest.updateCustomerById(id, updateRequest))
+                .isInstanceOf(DuplicateResourceException.class)
+                .hasMessage("email already was taken.");
+
+        // Then
+        verify(customerDao, never()).updateCustomer(any());
+    }
+
+    @Test
+    void willThrowWhenCustomerUpdateHasNoChanged() {
+        // Given
+        int id = 10;
+        var customer = new Customer(
+                id,
+                "Alex",
+                "alex@gmail.com",
+                22
+        );
+        when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
+
+        var updateRequest =
+                new CustomerUpdateRequest(customer.getName(), customer.getEmail(), customer.getAge());
+
+        // When
+        assertThatThrownBy(() -> underTest.updateCustomerById(id, updateRequest))
+                .isInstanceOf(RequestValidationException.class)
+                .hasMessage("no data changes found!");
+
+        // Then
+        verify(customerDao, never()).updateCustomer(any());
+    }
+
+
 }

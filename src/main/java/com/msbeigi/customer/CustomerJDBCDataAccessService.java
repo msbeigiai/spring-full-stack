@@ -44,7 +44,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     }
 
     @Override
-    public boolean existPersonWithEmail(String email) {
+    public boolean existCustomerWithEmail(String email) {
         var sql = """
                 select email from customer where email = ?;
                 """;

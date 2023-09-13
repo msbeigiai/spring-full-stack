@@ -1,6 +1,5 @@
 package com.msbeigi.customer;
 
-import com.github.javafaker.Faker;
 import com.msbeigi.AbstractTestContainers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
 
@@ -119,7 +117,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         underTest.insertCustomer(customer);
 
         // When
-        var actual = underTest.existPersonWithEmail(email);
+        var actual = underTest.existCustomerWithEmail(email);
 
         // Then
         assertThat(actual).isTrue();
@@ -132,7 +130,7 @@ class CustomerJDBCDataAccessServiceTest extends AbstractTestContainers {
         var email = FAKER.internet().safeEmailAddress() + "_" + UUID.randomUUID();
 
         // When
-        boolean actual = underTest.existPersonWithEmail(email);
+        boolean actual = underTest.existCustomerWithEmail(email);
 
         // Then
         assertThat(actual).isFalse();
