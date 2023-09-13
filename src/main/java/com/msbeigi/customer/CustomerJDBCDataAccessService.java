@@ -1,6 +1,6 @@
 package com.msbeigi.customer;
 
-import com.msbeigi.exception.ResourceNotFound;
+import com.msbeigi.exception.ResourceNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -56,7 +56,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public void deleteCustomerById(Integer id) {
         if (!existCustomerById(id))
-            throw new ResourceNotFound("customer with id [%s] not found!".formatted(id));
+            throw new ResourceNotFoundException("customer with id [%s] not found!".formatted(id));
         var sql = """
                 delete from customer where id = ?;
                 """;

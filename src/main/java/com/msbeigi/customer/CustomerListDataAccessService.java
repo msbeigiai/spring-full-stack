@@ -1,6 +1,5 @@
 package com.msbeigi.customer;
 
-import com.msbeigi.exception.ResourceNotFound;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

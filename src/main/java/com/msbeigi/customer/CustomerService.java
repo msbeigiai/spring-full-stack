@@ -2,7 +2,7 @@ package com.msbeigi.customer;
 
 import com.msbeigi.exception.DuplicateResourceException;
 import com.msbeigi.exception.RequestValidationException;
-import com.msbeigi.exception.ResourceNotFound;
+import com.msbeigi.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class CustomerService {
     public Customer getCustomerById(Integer id) {
         return customerDao.selectCustomerById(id)
                 .orElseThrow(() ->
-                        new ResourceNotFound("Customer with id [%s] not found!".formatted(id)));
+                        new ResourceNotFoundException("Customer with id [%s] not found!".formatted(id)));
     }
 
     public void addCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
@@ -45,7 +45,7 @@ public class CustomerService {
 
     public void deleteCustomerById(Integer id) {
         if (!customerDao.existCustomerById(id)) {
-            throw new ResourceNotFound("customer with id [%s]".formatted(id));
+            throw new ResourceNotFoundException("customer with id [%s]".formatted(id));
         }
         customerDao.deleteCustomerById(id);
     }
@@ -53,7 +53,7 @@ public class CustomerService {
     public void updateCustomerById(Integer id, CustomerUpdateRequest customerUpdateRequest) {
         boolean status = false;
         if (!customerDao.existCustomerById(id)) {
-            throw new ResourceNotFound("customer with id [%s]".formatted(id));
+            throw new ResourceNotFoundException("customer with id [%s]".formatted(id));
         }
 
         Customer customer = customerDao.selectCustomerById(id).get();
