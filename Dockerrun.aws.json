@@ -15,7 +15,7 @@
       "environment": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "value": "jdbc:postgresql://TODO:5432/customer"
+          "value": "jdbc:postgresql://awseb-e-ma4p6gp6mh-stack-awsebrdsdatabase-jm7l9ax6zprr.cnazlfesaafi.eu-north-1.rds.amazonaws.com:5432/customer"
         }
       ]
     }
