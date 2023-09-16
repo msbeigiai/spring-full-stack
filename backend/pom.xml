@@ -16,16 +16,14 @@
 	<description>Demo project for Spring Boot</description>
 
 
-	<organization>
-		<name>msbeigiai</name>
-		<url>http://msbeigi.com</url>
-	</organization>
-
-
-
 	<properties>
 		<java.version>17</java.version>
+		<docker.username>msbeigi</docker.username>
+		<docker.image.name>msbeigi-api</docker.image.name>
+		<docker.image.tag />
 	</properties>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -169,7 +167,7 @@
 						<image>eclipse-temurin:17</image>
 					</from>
 					<to>
-						<image>docker.io/${organization.name}/${project.artifactId}:${project.version}</image>
+						<image>docker.io/${docker.username}/${docker.image.name}:${docker.image.tag}</image>
 						<tags>
 							<tag>latest</tag>
 						</tags>
