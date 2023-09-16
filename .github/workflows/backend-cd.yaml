@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15.4
+        image: postgres:15.3
         env:
           POSTGRES_USER: msbeigi
           POSTGRES_PASSWORD: password
@@ -20,7 +20,7 @@ jobs:
         ports:
           - 5332:5432
         options: >-
-          --health-cmd pg_ready
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
