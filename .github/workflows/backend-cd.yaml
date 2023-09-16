@@ -2,7 +2,6 @@ name: CD - Deploy Backend
 
 on:
   workflow_dispatch:
-
   push:
     branches:
       - main
@@ -13,14 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15.3
+        image: postgres:15.4
         env:
           POSTGRES_USER: msbeigi
           POSTGRES_PASSWORD: password
           POSTGRES_DB: customer
         ports:
           - 5332:5432
-        options:
+        options: >-
           --health-cmd pg_ready
           --health-interval 10s
           --health-timeout 5s
