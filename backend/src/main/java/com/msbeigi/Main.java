@@ -40,11 +40,5 @@ public class Main {
        };
     }
 
-    /*@Bean
-    public Foo getFoo() {
-        return new Foo("bar");
-    }
-
-    record Foo(String name) { }*/
 
 }
