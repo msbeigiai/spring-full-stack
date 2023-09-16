@@ -28,6 +28,13 @@ jobs:
       run:
         working-directory: ./backend
     steps:
+      - name: Send Slack Message
+        run: >
+            curl && curl -X POST -H 'Content-type: application/json' 
+            --data '
+              {"text":"Deployment started :progress_bar: :fingerscrossed:"}
+            '
+            ${{ secrets.SLACK_WEBHOOK_URL }}
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
@@ -42,8 +49,22 @@ jobs:
       - name: Set Build Number
         id: build-number
         run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
+      - name: Send Slack Message
+        run: >
+           curl && curl -X POST -H 'Content-type: application/json' 
+           --data '
+             {"text":"Building with Maven :maven:"}
+           '
+           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Build Package Push With Maven
         run: mvn -ntp -B verify -Ddocker.image.tag=${{ steps.build-number.outputs.BUILD_NUMBER }} jib:build
+      - name: Send Slack Message
+        run: >
+         curl && curl -X POST -H 'Content-type: application/json' 
+         --data '
+           {"text":":docker: Image tag:${{ steps.build-number.outputs.BUILD_NUMBER }} pushed to https://hub.docker.com/repository/docker/msbeigiai/msbeigi-api" }
+         '
+         ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Update Dockerrun.aws.json api image tag with new build number
         run: |
           echo "Dockerrun.aws.json before updating tag"
@@ -51,6 +72,13 @@ jobs:
           sed -i -E 's_(msbeigiai/msbeigi-api:)([^"]*)_\1'${{ steps.build-number.outputs.BUILD_NUMBER }}'_' Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
           cat Dockerrun.aws.json
+      - name: Send Slack Message
+        run: >
+          curl && curl -X POST -H 'Content-type: application/json' 
+          --data '
+            {"text":":aws: Starting deployment to Elastic Beanstalk" }
+          '
+          ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
@@ -62,6 +90,13 @@ jobs:
           version_description: ${{ github.SHA }}
           region: ${{ secrets.EB_REGION }}
           deployment_package: backend/Dockerrun.aws.json
+      - name: Send Slack Message
+        run: >
+          curl && curl -X POST -H 'Content-type: application/json' 
+          --data '
+            {"text":":githubloading: Committing to repo https://github.com/msbeigiai/spring-full-stack" }
+          '
+          ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Commit and Push Dockerrun.aws.json
         run: |
           git config user.name github-actions
@@ -69,5 +104,12 @@ jobs:
           git add .
           git commit -m "Update Dockerrun.aws.json docker image with new tag ${{ steps.build-number.outputs.BUILD_NUMBER }}"
           git push
+      - name: Send Slack Message
+        run: >
+          curl && curl -X POST -H 'Content-type: application/json' 
+          --data '
+            {"text":":Deployment Completed!" }
+          '
+          ${{ secrets.SLACK_WEBHOOK_URL }}
           
       
