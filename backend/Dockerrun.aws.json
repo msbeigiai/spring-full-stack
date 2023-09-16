@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "msbeigi-api",
-      "image": "msbeigiai/msbeigi-api:16.09.2023.17.20.26",
+      "image": "msbeigiai/msbeigi-api:16.09.2023.17.27.57",
       "essential": true,
       "memory": 512,
       "portMappings": [
