@@ -54,7 +54,7 @@ class CustomerJPADataAccessServiceTest {
     @Test
     void insertCustomer() {
         // Given
-        var customer = new Customer(1, "ALi", "ali@gmail.com", 2);
+        var customer = new Customer(1, "ALi", "ali@gmail.com", 2, Gender.MALE);
 
         // When
         underTest.insertCustomer(customer);
@@ -103,7 +103,7 @@ class CustomerJPADataAccessServiceTest {
     @Test
     void updateCustomer() {
         // Given
-        var customer = new Customer(1, "updated", "updated@gmail.com", 33);
+        var customer = new Customer(1, "updated", "updated@gmail.com", 33, Gender.MALE);
 
         // When
         underTest.updateCustomer(customer);

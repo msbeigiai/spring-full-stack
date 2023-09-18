@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import com.msbeigi.customer.Customer;
 import com.msbeigi.customer.CustomerRegistrationRequest;
 import com.msbeigi.customer.CustomerUpdateRequest;
+import com.msbeigi.customer.Gender;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,8 +35,10 @@ public class CustomerIntegrationTest {
         var email = faker.name().lastName().toLowerCase() + "_" + UUID.randomUUID() + "@gmail.com";
         int age = new Random().nextInt(20, 90);
 
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
         // create registration request
-        var request = new CustomerRegistrationRequest(name, email, age);
+        var request = new CustomerRegistrationRequest(name, email, age, gender);
 
         // send a post request
         webTestClient.post()
@@ -59,10 +62,11 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        var expected = new Customer(name, email, age);
+        var expected = new Customer(name, email, age, gender);
 
         // make sure that the customer is present
-        assertThat(allCustomers).usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+        assertThat(allCustomers)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expected);
 
         var id = allCustomers
@@ -93,8 +97,10 @@ public class CustomerIntegrationTest {
         var email = faker.name().lastName().toLowerCase() + "_" + UUID.randomUUID() + "@gmail.com";
         int age = new Random().nextInt(20, 90);
 
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
         // create registration request
-        var request = new CustomerRegistrationRequest(name, email, age);
+        var request = new CustomerRegistrationRequest(name, email, age, gender);
 
         // send a post request
         webTestClient.post()
@@ -149,8 +155,10 @@ public class CustomerIntegrationTest {
         var email = faker.name().lastName().toLowerCase() + "_" + UUID.randomUUID() + "@gmail.com";
         int age = new Random().nextInt(20, 90);
 
+        Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
         // create registration request
-        var request = new CustomerRegistrationRequest(name, email, age);
+        var request = new CustomerRegistrationRequest(name, email, age, gender);
 
         // send a post request
         webTestClient.post()
@@ -207,7 +215,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        var expected = new Customer(id, newName, email, age);
+        var expected = new Customer(id, newName, email, age, gender);
 
         assertThat(updatedCustomer).isEqualTo(expected);
     }

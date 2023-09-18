@@ -45,8 +45,8 @@ class CustomerServiceTest {
                 id,
                 "Alex",
                 "alex@gmail.com",
-                22
-        );
+                22,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
         // When
@@ -79,7 +79,7 @@ class CustomerServiceTest {
         when(customerDao.existCustomerWithEmail(email)).thenReturn(false);
 
         var request = new CustomerRegistrationRequest(
-                "Alex", email, 22
+                "Alex", email, 22, Gender.MALE
         );
 
         // When
@@ -105,7 +105,7 @@ class CustomerServiceTest {
         when(customerDao.existCustomerWithEmail(email)).thenReturn(true);
 
         var request = new CustomerRegistrationRequest(
-                "Alex", email, 22
+                "Alex", email, 22, Gender.MALE
         );
 
         // When
@@ -157,8 +157,8 @@ class CustomerServiceTest {
                 id,
                 "Alex",
                 "alex@gmail.com",
-                22
-        );
+                22,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
         String newEmail = "updated@gmail.com";
@@ -191,8 +191,8 @@ class CustomerServiceTest {
                 id,
                 "Alex",
                 "alex@gmail.com",
-                22
-        );
+                22,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
         var updateRequest =
@@ -221,8 +221,8 @@ class CustomerServiceTest {
                 id,
                 "Alex",
                 "alex@gmail.com",
-                22
-        );
+                22,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
         var newEmail = "updated@gmail.com";
@@ -255,8 +255,8 @@ class CustomerServiceTest {
                 id,
                 "Alex",
                 "alex@gmail.com",
-                22
-        );
+                22,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
         int newAge = 44;
@@ -287,8 +287,8 @@ class CustomerServiceTest {
                 id,
                 "Alex",
                 "alex@gmail.com",
-                22
-        );
+                22,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
         var newEmail = "updated@gmail.com";
@@ -315,8 +315,8 @@ class CustomerServiceTest {
                 id,
                 "Alex",
                 "alex@gmail.com",
-                22
-        );
+                22,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
         var updateRequest =

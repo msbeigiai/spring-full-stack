@@ -34,8 +34,8 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         var customer = new Customer(
                 FAKER.name().fullName(),
                 FAKER.internet().emailAddress() + "_" + UUID.randomUUID(),
-                39
-        );
+                39,
+                Gender.MALE);
         underTest.save(customer);
 
         // When
@@ -63,8 +63,8 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         var customer = new Customer(
                 FAKER.name().fullName(),
                 FAKER.internet().emailAddress() + "_" + UUID.randomUUID(),
-                39
-        );
+                39,
+                Gender.MALE);
         underTest.save(customer);
 
         int id = underTest.findAll()
