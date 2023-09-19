@@ -26,7 +26,7 @@ const UpdateCustomerDrawer = ({ fetchCustomers, initialValues, customerId }) => 
                     boxShadow: "lg"
                 }}
                 onClick={onOpen}
-                leftIcon={<AiFillEdit />}
+                // leftIcon={<AiFillEdit />}
             >
                 Update customer
             </Button>

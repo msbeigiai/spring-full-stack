@@ -33,9 +33,11 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
         <Center py={6}>
             <Box
                 maxW={'300px'}
+                minW={'300px'}
                 w={'full'}
+                m={2}
                 bg={useColorModeValue('white', 'gray.800')}
-                boxShadow={'2xl'}
+                boxShadow={'lg'}
                 rounded={'md'}
                 overflow={'hidden'}>
                 <Image
@@ -69,11 +71,12 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                         <Text color={'gray.500'}>Age: {age} | {gender}</Text>
                     </Stack>
                 </Box>
-                <Stack direction={"row"} justify={"center"} spacing={6} >
+                <Stack direction={"row"} justify={"center"} spacing={6} p={2}>
                     <Stack>
                         <UpdateCustomerDrawer
                             initialValues={{ name, email, age}}
                             customerId={id}
+                            fetchCustomers={fetchCustomers}
                         />
                     </Stack>
                     <Stack>
@@ -81,7 +84,7 @@ export default function CardWithImage({id, name, email, age, gender, imageNumber
                             bg={"red.400"}
                             color={"white"}
                             rounded={"full"}
-                            leftIcon={<AiFillDelete />}
+                            // leftIcon={<AiFillDelete />}
                             _hover={{
                                 transform: "translateY(-2px)",
                                 boxShadow: "lg"

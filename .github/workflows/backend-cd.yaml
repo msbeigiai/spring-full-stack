@@ -68,10 +68,10 @@ jobs:
       - name: Update Dockerrun.aws.json api image tag with new build number
         run: |
           echo "Dockerrun.aws.json before updating tag"
-          cat Dockerrun.aws.json
-          sed -i -E 's_(msbeigiai/msbeigi-api:)([^"]*)_\1'${{ steps.build-number.outputs.BUILD_NUMBER }}'_' Dockerrun.aws.json
+          cat ../Dockerrun.aws.json
+          sed -i -E 's_(msbeigiai/msbeigi-api:)([^"]*)_\1'${{ steps.build-number.outputs.BUILD_NUMBER }}'_' ../Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
-          cat Dockerrun.aws.json
+          cat ../Dockerrun.aws.json
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -89,7 +89,7 @@ jobs:
           version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
           version_description: ${{ github.SHA }}
           region: ${{ secrets.EB_REGION }}
-          deployment_package: backend/Dockerrun.aws.json
+          deployment_package: Dockerrun.aws.json
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -101,7 +101,7 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add .
+          git add ../Dockerrun.aws.json
           git commit -m "Update Dockerrun.aws.json docker image with new tag ${{ steps.build-number.outputs.BUILD_NUMBER }}"
           git push
       - uses: 8398a7/action-slack@v3
