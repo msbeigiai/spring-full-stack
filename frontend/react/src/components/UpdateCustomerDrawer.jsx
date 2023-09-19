@@ -4,24 +4,31 @@ import {
     DrawerCloseButton,
     DrawerContent, DrawerFooter,
     DrawerHeader,
-    DrawerOverlay,
+    DrawerOverlay, Editable,
     useDisclosure
 } from "@chakra-ui/react";
-import CreateCustomerForm from "./CreateCustomerForm.jsx";
+import UpdateCustomerForm from "./UpdateCustomerForm.jsx";
+import {AiFillEdit} from "react-icons/ai";
 
 const AddIcon = () => "+";
 const CloseIcon = () => "x";
 
-const UpdateCustomerDrawer = ({ fetchCustomers }) => {
+const UpdateCustomerDrawer = ({ fetchCustomers, initialValues, customerId }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <>
             <Button
-                leftIcon={<AddIcon/>}
-                colorScheme={"teal"}
+                bg={"gray.300"}
+                color={"black"}
+                rounded={"full"}
+                _hover={{
+                    transform: "translateY(-2px)",
+                    boxShadow: "lg"
+                }}
                 onClick={onOpen}
+                leftIcon={<AiFillEdit />}
             >
-                Create customer
+                Update customer
             </Button>
             <Drawer
                 isOpen={isOpen}
@@ -31,11 +38,13 @@ const UpdateCustomerDrawer = ({ fetchCustomers }) => {
                 <DrawerOverlay/>
                 <DrawerContent>
                     <DrawerCloseButton/>
-                    <DrawerHeader>Create new customer</DrawerHeader>
+                    <DrawerHeader>Update customer</DrawerHeader>
 
                     <DrawerBody>
-                        <CreateCustomerForm
+                        <UpdateCustomerForm
                             fetchCustomers = {fetchCustomers}
+                            initialValues = {initialValues}
+                            customerId={customerId}
                         />
                     </DrawerBody>
 
