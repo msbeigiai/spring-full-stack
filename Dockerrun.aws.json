@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "msbeigi-react",
-      "image": "msbeigiai/msbeigi-react:latest",
+      "image": "msbeigiai/msbeigi-react:20.09.2023.07.38.52",
       "essential": true,
       "memory": 256,
       "portMappings": [
