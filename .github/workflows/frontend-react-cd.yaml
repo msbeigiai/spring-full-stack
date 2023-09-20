@@ -40,14 +40,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
-      - name: Docker build and push
+      - name: Docker Build and push
         run: |
           chmod +x ../../.ci/build-publish.sh
-          USERNAME=msbeigiai
-          REPO=msbeigi-react
+          USERNAME=msbeigiai \
+          REPO=msbeigi-react \
           TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
           ../../.ci/build-publish.sh . \
-          --build-arg api_base_url=http://msbeigi-api-env.eba-mpbpqutp.eu-north-1.elasticbeanstalk.com:8080
+            --build-arg api_base_url=http://msbeigi-api-env.eba-mpbpqutp.eu-north-1.elasticbeanstalk.com:8080
       - name: Send Slack message
         uses: 8398a7/action-slack@v3
         with:
