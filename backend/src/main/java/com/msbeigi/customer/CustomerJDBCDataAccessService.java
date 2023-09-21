@@ -21,7 +21,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public List<Customer> selectAllCustomers() {
         var sql = """
-                select id, name, email, age, gender from customer;
+                select id, name, email, password, age, gender from customer;
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
     }
@@ -29,7 +29,7 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public Optional<Customer> selectCustomerById(Integer id) {
         var sql = """
-                select id, name, email, age, gender from customer where id = ?;
+                select id, name, email, password, age, gender from customer where id = ?;
                 """;
         return jdbcTemplate.query(sql, customerRowMapper, id)
                 .stream()
@@ -39,9 +39,10 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
     @Override
     public void insertCustomer(Customer customer) {
         var sql = """
-                insert into customer(name, email, age, gender) values (?, ?, ?, ?);
+                insert into customer(name, email, password, age, gender) values (?, ?, ?, ?, ?);
                 """;
-        jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getAge(), customer.getGender().name());
+        jdbcTemplate.update(sql, customer.getName(), customer.getEmail(), customer.getPassword(),
+                customer.getAge(), customer.getGender().name());
     }
 
     @Override
@@ -89,5 +90,13 @@ public class CustomerJDBCDataAccessService implements CustomerDao {
             int result = jdbcTemplate.update(sql, update.getEmail(), update.getId());
             System.out.println("update customer email result = " + result);
         }
+    }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+        String sql = "select id, name, email, password, age, gender from customer where email = ?";
+        return jdbcTemplate.query(sql, customerRowMapper, email)
+                .stream()
+                .findFirst();
     }
 }
