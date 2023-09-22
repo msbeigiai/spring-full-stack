@@ -17,7 +17,7 @@ management:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5332/customer
+    url: jdbc:postgresql://awseb-e-dmsnxjwh7r-stack-awsebrdsdatabase-ulwycadqodvn.cnazlfesaafi.eu-north-1.rds.amazonaws.com:5432/ebdb
     username: msbeigi
     password: password
   jpa:
