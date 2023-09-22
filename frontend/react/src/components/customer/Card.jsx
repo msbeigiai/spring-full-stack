@@ -19,8 +19,8 @@ import {
     AlertDialogHeader, AlertDialogBody, AlertDialogFooter,
 } from '@chakra-ui/react'
 import {useRef} from "react";
-import {deleteCustomer} from "../services/client.js";
-import {errorNotification, successNotification} from "../services/notification.js";
+import {deleteCustomer} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
 import {AiFillDelete} from "react-icons/ai";
 

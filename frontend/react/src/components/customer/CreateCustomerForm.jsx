@@ -1,8 +1,8 @@
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
-import {saveCustomer} from "../services/client.js";
-import {errorNotification, successNotification} from "../services/notification.js";
+import {saveCustomer} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -48,6 +48,7 @@ const CreateCustomerForm = ({ fetchCustomers }) => {
                     name: '',
                     email: '',
                     gender: '', // added for our select
+                    password: ''
                 }}
                 validationSchema={Yup.object({
                     name: Yup.string()
@@ -59,6 +60,10 @@ const CreateCustomerForm = ({ fetchCustomers }) => {
                     age: Yup.number()
                         .min(16, 'Must be at least 16 years of age.')
                         .max(88, 'Must be less than 88')
+                        .required('Required'),
+                    password: Yup.string()
+                        .min(8, 'Must be at least 8 chars or more.')
+                        .max(20, 'Must be 20 characters or less')
                         .required('Required'),
                     gender: Yup.string()
                         .oneOf(
@@ -108,13 +113,24 @@ const CreateCustomerForm = ({ fetchCustomers }) => {
                                 type="number"
                                 placeholder="20"
                             />
+                            <MyTextInput
+                                label="Password"
+                                name="password"
+                                type="password"
+                                placeholder="Pick a secure password"
+                            />
 
                             <MySelect label="Gender" name="gender">
                                 <option value="">Select gender</option>
                                 <option value="MALE">Male</option>
                                 <option value="FEMALE">Female</option>
                             </MySelect>
-                            <Button isDisabled={(!isValid || isSubmitting)} type="submit">Submit</Button>
+                            <Button
+                                isDisabled={(!isValid || isSubmitting)}
+                                type="submit"
+                            >
+                                Submit
+                            </Button>
                         </Stack>
                     </Form>
                 )}

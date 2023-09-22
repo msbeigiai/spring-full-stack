@@ -23,21 +23,22 @@ public class Main {
 
     @Bean
     CommandLineRunner runner(CustomerRepository customerRepository, PasswordEncoder encoder) {
-       return args -> {
-           var faker = new Faker();
-           Random random = new Random();
+        return args -> {
+            var faker = new Faker();
+            Random random = new Random();
 
-           String name = faker.name().firstName();
-           String lastName = faker.name().lastName();
-           int age = random.nextInt(19, 88);
-           Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
-           String emailAddress = name.toLowerCase() + "." + lastName.toLowerCase() + "@gmail.com";
+            String name = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            int age = random.nextInt(19, 88);
+            Gender gender = age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+            String emailAddress = name.toLowerCase() + "." + lastName.toLowerCase() + "@gmail.com";
 
-           var customer = new Customer(name + " " + lastName, emailAddress,
-                   encoder.encode(UUID.randomUUID().toString()), age, gender);
+            var customer = new Customer(name + " " + lastName, emailAddress,
+                    encoder.encode("password"), age, gender);
 
-             customerRepository.save(customer);
-       };
+            customerRepository.save(customer);
+            System.out.println(emailAddress);
+        };
     }
 
 }
