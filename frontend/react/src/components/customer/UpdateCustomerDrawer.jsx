@@ -28,7 +28,7 @@ const UpdateCustomerDrawer = ({ fetchCustomers, initialValues, customerId }) => 
                 onClick={onOpen}
                 // leftIcon={<AiFillEdit />}
             >
-                Update customer
+                Update
             </Button>
             <Drawer
                 isOpen={isOpen}
