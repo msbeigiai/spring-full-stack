@@ -38,7 +38,6 @@ const MyTextInput = ({ label, ...props }) => {
     );
 };
 
-
 const LoginForm = () => {
     const {login} = useAuth();
     const navigate = useNavigate()
@@ -111,7 +110,7 @@ const Login = () => {
 
     useEffect(() => {
         if (customer) {
-            navigate("/dashboard")
+            navigate("/dashboard/customers")
         }
     }, []);
 
