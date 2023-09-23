@@ -2,6 +2,7 @@
 
 ## Overview
 
+<<<<<<< HEAD
 This is a full-stack web application that combines a 
 Spring Framework backend with a React frontend. 
 It provides customer registration, see all customer, customer
@@ -13,6 +14,9 @@ All the `Unit tests` and `integration tests` are implemented and the application
 is fully **CI/CD** compatible. \
 The backend is fully automated deployable 
 in **AWS Elastic BeansTalk** and frontend is fully automated deployable in **AWS Amplify**. 
+=======
+This is a full-stack web application that combines a Spring Framework backend with a React frontend. It provides customer registration, see all customer, customer authentication and authorization by using most common Spring framework libraries **Spring Security, Spring Web, Spring Data JPA, Spring JDBC**.
+>>>>>>> 5de856f1da9355f3215b05ffe22f34a16c2a7264
 
 ## Table of Contents
 
@@ -43,6 +47,7 @@ To get this project up and running, follow the steps below for both the backend 
 1. Clone the repository:
 
    ```bash
+<<<<<<< HEAD
    git clone https://github.com/msbeigiai/spring-full-stack.git
     ```
 2. Navigate to the backend directory:
@@ -68,3 +73,6 @@ To get this project up and running, follow the steps below for both the backend 
 5. The default 
    
     
+=======
+   git clone https://github.com/yourusername/your-project.git
+>>>>>>> 5de856f1da9355f3215b05ffe22f34a16c2a7264
