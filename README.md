@@ -12,10 +12,9 @@ and **Chakra** technologies for frontend, and also **Postgres** as a database. \
 All the `Unit tests` and `integration tests` are implemented and the application \
 is fully **CI/CD** compatible. \
 The backend is fully automated deployable 
+
 in **AWS Elastic BeansTalk** and frontend is fully automated deployable in **AWS Amplify**.
-
 This is a full-stack web application that combines a Spring Framework backend with a React frontend. It provides customer registration, see all customer, customer authentication and authorization by using most common Spring framework libraries **Spring Security, Spring Web, Spring Data JPA, Spring JDBC**.
-
 
 ## Table of Contents
 
