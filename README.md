@@ -89,7 +89,4 @@ CREATE DATABASE customer;
 ```
 by now your application must be up and running.
 
-If you have any question feel free to ask me.
-=======
-5. The default
->>>>>>> d60c88fddc842bbbe77f843d698c36938820402e
+### If you have any question feel free to ask me.
