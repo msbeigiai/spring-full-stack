@@ -68,4 +68,25 @@ To get this project up and running, follow the steps below for both the backend 
    docker push msbeigiai/msbeigi-react
     ```
    this will also pushes newest version of frontend into Docker hub.
-5. The default
+5. To boot up the entire project navigate back to the project root and then run docker compose command:
+    ```bash
+   cd spring-boot-example/
+   docker compose up -d
+    ```
+   
+6- In case you see error booting up backend just navigate inside `postgres` database by running:
+```bash
+docker exec -it postgres bash
+```
+and then run:
+```bash
+psql -U msbeigi
+```
+while your are prompted for password, supply `password` as password.\
+inside postgres database create `customer` database by querying:
+```sql
+CREATE DATABASE customer;
+```
+by now your application must be up and running.
+
+If you have any question feel free to ask me.
