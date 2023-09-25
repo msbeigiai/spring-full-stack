@@ -78,7 +78,8 @@ public class CustomerIntegrationTest {
                 gender,
                 age,
                 List.of("ROLE_USER"),
-                email
+                email,
+                null
         );
 
         // make sure that the customer is present
@@ -250,7 +251,7 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        var expected = new CustomerDTO(id, newName, email, gender, age, List.of("ROLE_USER"), email);
+        var expected = new CustomerDTO(id, newName, email, gender, age, List.of("ROLE_USER"), email,null );
 
         assertThat(updatedCustomer).isEqualTo(expected);
     }
