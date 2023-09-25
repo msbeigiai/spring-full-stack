@@ -119,7 +119,7 @@ public class CustomerService {
                     file.getBytes()
             );
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("failed to upload profile image", e);
         }
         customerDao.updateCustomerProfileImageId(profileImageId, customerId);
     }
