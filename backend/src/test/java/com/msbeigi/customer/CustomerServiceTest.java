@@ -3,6 +3,8 @@ package com.msbeigi.customer;
 import com.msbeigi.exception.DuplicateResourceException;
 import com.msbeigi.exception.RequestValidationException;
 import com.msbeigi.exception.ResourceNotFoundException;
+import com.msbeigi.s3.S3Buckets;
+import com.msbeigi.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,9 +24,12 @@ class CustomerServiceTest {
 
     @Mock
     private CustomerDao customerDao;
-
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private S3Service s3Service;
+    @Mock
+    private S3Buckets s3Buckets;
 
     private CustomerService underTest;
     private final CustomerDTOMapper customerDTOMapper = new CustomerDTOMapper();
@@ -32,7 +37,13 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDao, customerDTOMapper, passwordEncoder);
+        underTest = new CustomerService(
+                customerDao,
+                customerDTOMapper,
+                passwordEncoder,
+                s3Service,
+                s3Buckets
+        );
     }
 
     @Test
