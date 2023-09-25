@@ -15,6 +15,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -390,33 +391,79 @@ class CustomerServiceTest {
     }
 
     @Test
-    void canUploadProfileImage() {
+    void canNotUploadProfileImageWhenCustomerDoesNotExists() {
+        // Given
+        int customerId = 10;
+
+        when(customerDao.existCustomerById(customerId)).thenReturn(false);
+
+        // when
+        assertThatThrownBy(() ->
+                underTest.uploadCustomerProfileImage(customerId, mock(MultipartFile.class))
+        ).isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("customer with id [" + customerId + "] not found.");
+
+        // then
+        verify(customerDao).existCustomerById(customerId);
+        verifyNoMoreInteractions(customerDao);
+        verifyNoInteractions(s3Buckets);
+        verifyNoInteractions(s3Service);
+
+    }
+
+    @Test
+    void canNotUploadProfileImageWhenExceptionIsThrown() throws IOException {
         // Given
         int customerId = 10;
 
         when(customerDao.existCustomerById(customerId)).thenReturn(true);
 
-        byte[] bytes = "Hello World!".getBytes();
-
-        MultipartFile multipartFile = new MockMultipartFile("file", bytes);
+        MultipartFile multipartFile = mock(MultipartFile.class);
+        when(multipartFile.getBytes()).thenThrow(IOException.class);
 
         String bucket = "customer-bucket";
         when(s3Buckets.getCustomer()).thenReturn(bucket);
 
         // When
-        underTest.uploadCustomerProfileImage(customerId, multipartFile);
+        assertThatThrownBy(() ->
+                underTest.uploadCustomerProfileImage(customerId, multipartFile)
+        ).isInstanceOf(RuntimeException.class)
+                .hasMessage("failed to upload profile image")
+                .hasRootCauseInstanceOf(IOException.class);
+        // Then
+        verify(customerDao, never()).updateCustomerProfileImageId(any(), any());
+    }
+
+    @Test
+    void canDownloadProfileImage() {
+        // Given
+        int customerId = 10;
+        String profileImageId = "22222";
+        var customer = new Customer(
+                customerId,
+                "Alex",
+                "alex@gmail.com",
+                22,
+                Gender.MALE,
+                "password",
+                profileImageId);
+        when(customerDao.selectCustomerById(customerId)).thenReturn(Optional.of(customer));
+
+        String bucket = "customer-bucket";
+        when(s3Buckets.getCustomer()).thenReturn(bucket);
+
+        byte[] expectedImage = "image".getBytes();
+
+        when(s3Service.getObject(
+                bucket,
+                "profile-images/%s/%s".formatted(customerId, profileImageId)
+        ))
+                .thenReturn(expectedImage);
+
+        // When
+        byte[] actualImage = underTest.getCustomerProfileImage(customerId);
 
         // Then
-        ArgumentCaptor<String> profileImageIdArgumentCaptor =
-                ArgumentCaptor.forClass(String.class);
-        verify(customerDao).updateCustomerProfileImageId(
-                profileImageIdArgumentCaptor.capture(),
-                eq(customerId)
-        );
-
-        verify(s3Service).putObject(
-                bucket,
-                "profile-images/%s/%s".formatted(customerId, profileImageIdArgumentCaptor.getValue()),
-                bytes);
+        assertThat(actualImage).isEqualTo(expectedImage);
     }
 }
