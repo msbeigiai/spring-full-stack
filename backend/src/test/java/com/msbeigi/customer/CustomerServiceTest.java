@@ -11,7 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -356,5 +358,65 @@ class CustomerServiceTest {
         verify(customerDao, never()).updateCustomer(any());
     }
 
+    @Test
+    void canUploadProfileImage() {
+        // Given
+        int customerId = 10;
 
+        when(customerDao.existCustomerById(customerId)).thenReturn(true);
+
+        byte[] bytes = "Hello World!".getBytes();
+
+        MultipartFile multipartFile = new MockMultipartFile("file", bytes);
+
+        String bucket = "customer-bucket";
+        when(s3Buckets.getCustomer()).thenReturn(bucket);
+
+        // When
+        underTest.uploadCustomerProfileImage(customerId, multipartFile);
+
+        // Then
+        ArgumentCaptor<String> profileImageIdArgumentCaptor =
+                ArgumentCaptor.forClass(String.class);
+        verify(customerDao).updateCustomerProfileImageId(
+                profileImageIdArgumentCaptor.capture(),
+                eq(customerId)
+        );
+
+        verify(s3Service).putObject(
+                bucket,
+                "profile-images/%s/%s".formatted(customerId, profileImageIdArgumentCaptor.getValue()),
+                bytes);
+    }
+
+    @Test
+    void canUploadProfileImage() {
+        // Given
+        int customerId = 10;
+
+        when(customerDao.existCustomerById(customerId)).thenReturn(true);
+
+        byte[] bytes = "Hello World!".getBytes();
+
+        MultipartFile multipartFile = new MockMultipartFile("file", bytes);
+
+        String bucket = "customer-bucket";
+        when(s3Buckets.getCustomer()).thenReturn(bucket);
+
+        // When
+        underTest.uploadCustomerProfileImage(customerId, multipartFile);
+
+        // Then
+        ArgumentCaptor<String> profileImageIdArgumentCaptor =
+                ArgumentCaptor.forClass(String.class);
+        verify(customerDao).updateCustomerProfileImageId(
+                profileImageIdArgumentCaptor.capture(),
+                eq(customerId)
+        );
+
+        verify(s3Service).putObject(
+                bucket,
+                "profile-images/%s/%s".formatted(customerId, profileImageIdArgumentCaptor.getValue()),
+                bytes);
+    }
 }
