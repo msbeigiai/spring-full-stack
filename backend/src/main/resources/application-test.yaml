@@ -1,0 +1,10 @@
+aws:
+  region: "eu-north-1"
+  s3:
+    mock: false
+
+spring:
+  datasource:
+    url: jdbc:postgresql://awseb-e-dmsnxjwh7r-stack-awsebrdsdatabase-ulwycadqodvn.cnazlfesaafi.eu-north-1.rds.amazonaws.com:5432/ebdb
+    username: msbeigi
+    password: password
