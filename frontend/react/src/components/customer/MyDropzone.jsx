@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
 import {useDropzone} from 'react-dropzone'
 import {Box} from "@chakra-ui/react";
-import {uploadProfilePicture} from "../../services/client.js";
+import {uploadCustomerProfilePicture} from "../../services/client.js";
 import {errorNotification, successNotification} from "../../services/notification.js";
 
 export default function MyDropzone({ customerId, fetchCustomers }) {
@@ -9,14 +9,14 @@ export default function MyDropzone({ customerId, fetchCustomers }) {
         const formData = new FormData();
         formData.append("file", acceptedFiles[0])
 
-        uploadProfilePicture(
+        uploadCustomerProfilePicture(
             customerId,
             formData
         ).then(() => {
             successNotification("Success", "Profile picture uploaded successfully.");
             fetchCustomers();
         }).catch((err) => {
-            errorNotification("Failed", "Profile picture failed to upload.");
+            errorNotification("Error", "Profile picture failed to upload.");
             console.log(err)
         })
     }, [])
@@ -24,8 +24,8 @@ export default function MyDropzone({ customerId, fetchCustomers }) {
 
     return (
         <Box {...getRootProps()}
-            w={"100%"}
-            textAlign={"center"}
+             w={"100%"}
+             textAlign={"center"}
              border={"dashed"}
              borderColor={"gray.200"}
              borderRadius={"3xl"}
