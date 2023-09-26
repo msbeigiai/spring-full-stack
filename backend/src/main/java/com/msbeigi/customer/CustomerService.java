@@ -5,6 +5,7 @@ import com.msbeigi.exception.RequestValidationException;
 import com.msbeigi.exception.ResourceNotFoundException;
 import com.msbeigi.s3.S3Buckets;
 import com.msbeigi.s3.S3Service;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -131,9 +132,9 @@ public class CustomerService {
                         "customer with id [%s] not found!".formatted(customerId)
                 ));
 
-        if (customer.profileImageId().isBlank()) {
+        if (StringUtils.isBlank(customer.profileImageId())) {
             throw new ResourceNotFoundException(
-                    "customer with is [%s] profile image not found!".formatted(customerId));
+                    "customer with id [%s] profile image not found!".formatted(customerId));
         }
 
         return s3Service.getObject(

@@ -466,4 +466,50 @@ class CustomerServiceTest {
         // Then
         assertThat(actualImage).isEqualTo(expectedImage);
     }
+
+    @Test
+    void canNotDownloadProfileImageWhenNoProfileImageId() {
+        // Given
+        int customerId = 10;
+        var customer = new Customer(
+                customerId,
+                "Alex",
+                "alex@gmail.com",
+                "password",
+                22,
+                Gender.MALE
+        );
+
+        when(customerDao.selectCustomerById(customerId)).thenReturn(Optional.of(customer));
+
+        // When
+        // then
+        assertThatThrownBy(() ->
+                underTest.getCustomerProfileImage(customerId))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("customer with id [%s] profile image not found!".formatted(customerId));
+
+        verifyNoInteractions(s3Service);
+        verifyNoInteractions(s3Buckets);
+
+    }
+
+    @Test
+    void canNotDownloadProfileImageWhenCustomerDoesNotExists() {
+        // Given
+        int customerId = 10;
+
+        when(customerDao.selectCustomerById(customerId)).thenReturn(Optional.empty());
+
+        // When
+        // then
+        assertThatThrownBy(() ->
+                underTest.getCustomerProfileImage(customerId))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessage("customer with id [%s] not found!".formatted(customerId));
+
+        verifyNoInteractions(s3Service);
+        verifyNoInteractions(s3Buckets);
+
+    }
 }
