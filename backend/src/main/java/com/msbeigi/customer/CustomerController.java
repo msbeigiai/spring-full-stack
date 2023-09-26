@@ -56,8 +56,10 @@ public class CustomerController {
             value = "{customerId}/profile-image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public void uploadCustomerProfileImage(@PathVariable("customerId") Integer customerId,
-                                           @RequestParam("file") MultipartFile file) {
+    public void uploadCustomerProfileImage(
+            @PathVariable("customerId") Integer customerId,
+            @RequestParam("file") MultipartFile file
+    ) {
         customerService.uploadCustomerProfileImage(customerId, file);
     }
 

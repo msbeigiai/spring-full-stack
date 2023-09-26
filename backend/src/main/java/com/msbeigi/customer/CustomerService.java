@@ -25,7 +25,7 @@ public class CustomerService {
     private final S3Service s3Service;
     private final S3Buckets buckets;
 
-    public CustomerService(@Qualifier("jpa") CustomerDao customerDao,
+    public CustomerService(@Qualifier("jdbc") CustomerDao customerDao,
                            CustomerDTOMapper customerDTOMapper, PasswordEncoder passwordEncoder, S3Service s3Service, S3Buckets buckets) {
         this.customerDao = customerDao;
         this.customerDTOMapper = customerDTOMapper;
