@@ -57,7 +57,7 @@ export const login = async (usernameAndPassword) => {
     }
 }
 
-export const uploadProfilePicture = async (id, formData) => {
+export const uploadCustomerProfilePicture = async (id, formData) => {
     try {
         return axios.post(
             `${import.meta.env.VITE_API_BASEURL}/api/v1/customers/${id}/profile-image`,
