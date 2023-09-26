@@ -12,6 +12,7 @@ cors:
 aws:
   region: "eu-north-1"
   s3:
+    mock: true
     buckets:
       customer: "fs-msbeigi-customer-test"
 
@@ -36,3 +37,9 @@ spring:
     show-sql: false
   main:
     web-application-type: servlet
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 50MB
+  codec:
+    max-in-memory-size: 10MB
