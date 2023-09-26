@@ -1,8 +1,9 @@
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
-import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
-import {updateCustomer} from "../../services/client.js";
+import {Alert, AlertIcon, Box, Button, FormLabel, Image, Input, Select, Stack, VStack} from "@chakra-ui/react";
+import {customerProfilePictureUrl, updateCustomer} from "../../services/client.js";
 import {errorNotification, successNotification} from "../../services/notification.js";
+import MyDropzone from "./MyDropzone.jsx";
 
 const MyTextInput = ({ label, ...props }) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -28,6 +29,15 @@ const MyTextInput = ({ label, ...props }) => {
 const UpdateCustomerForm = ({ fetchCustomers, initialValues, customerId }) => {
     return (
         <>
+            <VStack spacing={"5"} mb={"5"}>
+                <Image
+                    borderRadius={"full"}
+                    boxSize={"150px"}
+                    objectFit={"cover"}
+                    src={customerProfilePictureUrl(customerId)}
+                />
+                <MyDropzone customerId={customerId} fetchCustomers={fetchCustomers} />
+            </VStack>
             <Formik
                 initialValues={initialValues}
                 validationSchema={Yup.object({
