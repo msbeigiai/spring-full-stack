@@ -23,10 +23,7 @@ Also using **AWS S3** to store profile pictures.
     - [Frontend (React)](#frontend-react)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [Development](#development)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Prerequisites
 
@@ -40,6 +37,8 @@ Before you begin, ensure you have met the following requirements:
 To get this project up and running, follow the steps below for both the backend (Spring Framework) and frontend (React) components.
 
 ### Backend (Spring Framework)
+
+#### To get running backend:
 
 1. Clone the repository:
 
@@ -59,21 +58,24 @@ To get this project up and running, follow the steps below for both the backend 
    mvn clean deploy jib:build
    ```
    this will deploy the newest backend in Docker hub and later can be run in `docker compose`.
-4. Navigate back to frontend, then react and run:
+
+### Frontend (React)
+#### To get running frontend:
+1. Navigate back to frontend, then navigate to react folder and run:
     ```bach
    cd ../frontend/react
    docker build . -t msbeigiai/msbeigi-react
    docker push msbeigiai/msbeigi-react
     ```
    this will also pushes newest version of frontend into Docker hub.
-<<<<<<< HEAD
-5. To boot up the entire project navigate back to the project root and then run docker compose command:
+2. To boot up the entire project navigate back to the project root and then run docker compose command:
     ```bash
    cd spring-boot-example/
    docker compose up -d
     ```
-   
-6- In case you see error booting up backend just navigate inside `postgres` database by running:
+
+### Configuration
+1. In case you see error booting up backend just navigate inside `postgres` database by running:
 ```bash
 docker exec -it postgres bash
 ```
@@ -87,5 +89,8 @@ inside postgres database create `customer` database by querying:
 CREATE DATABASE customer;
 ```
 by now your application must be up and running.
+
+### Usage
+By configuring the project as above guidance, project can run gracefully.
 
 ### If you have any question feel free to ask me.
