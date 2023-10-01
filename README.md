@@ -9,7 +9,7 @@ authentication and authorization by using most common Spring
 framework libraries **Spring Security, Spring Web, Spring Data JPA,
 Spring JDBC** for backend and **React**, **ReactRouter** 
 and **Chakra** technologies for frontend, and also **Postgres** as a database. \
-All the `Unit tests` and `integration tests` are implemented and the application 
+All the `Unit tests` and `Integration tests` are implemented and the application 
 is fully **CI/CD** compatible. \
 The backend is fully automated deployable
 in **AWS Elastic BeansTalk** and frontend is fully automated deployable in **AWS Amplify**.
@@ -52,12 +52,12 @@ To get this project up and running, follow the steps below for both the backend 
    to run the application there are 2 alternative ways:
     - 1. running each one individually
     - 2. or by deploying to docker hub and running _docker compose_. \
-*I would suggest the second option because both backend and frontend will run in a single command*
+*I suggest the second option because both backend and frontend will run in a single command*
 3. Navigate to the backend folder and run:
     ```bash
    mvn clean deploy jib:build
    ```
-   this will deploy the newest backend in Docker hub and later can be run in `docker compose`.
+   this command will deploy the latest backend in Docker hub and later can be run in `docker compose`.
 
 ### Frontend (React)
 #### To get running frontend:
@@ -67,7 +67,7 @@ To get this project up and running, follow the steps below for both the backend 
    docker build . -t msbeigiai/msbeigi-react
    docker push msbeigiai/msbeigi-react
     ```
-   this will also pushes newest version of frontend into Docker hub.
+   this will also push latest version of frontend into Docker hub.
 2. To boot up the entire project navigate back to the project root and then run docker compose command:
     ```bash
    cd spring-boot-example/
@@ -83,14 +83,14 @@ and then run:
 ```bash
 psql -U msbeigi
 ```
-while your are prompted for password, supply `password` as password.\
-inside postgres database create `customer` database by querying:
+while you are prompted for password, supply `password`.\
+inside postgres database create `customer` database by writing:
 ```sql
 CREATE DATABASE customer;
 ```
 by now your application must be up and running.
 
 ### Usage
-By configuring the project as above guidance, project can run gracefully.
+By configuring the project as above guidelines, project can run perfectly.
 
 ### If you have any question feel free to ask me.
