@@ -51,8 +51,8 @@ To get this project up and running, follow the steps below for both the backend 
     ```
    to run the application there are 2 alternative ways:
     - 1. running each one individually
-    - 2. or by deploying to docker hub and running _docker compose_
-    _ I would suggest the second option because both backend and frontend will run in a single command.
+    - 2. or by deploying to docker hub and running _docker compose_. \
+*I would suggest the second option because both backend and frontend will run in a single command*
 3. Navigate to the backend folder and run:
     ```bash
    mvn clean deploy jib:build
