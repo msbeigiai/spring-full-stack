@@ -2,10 +2,10 @@
 
 ## Overview
 
-This is a full-stack web application that combines a 
-Spring Framework backend with a React frontend. 
-It provides customer registration, see all customer, customer
-authentication and authorization by using most common Spring 
+This is a full-stack web application in Java Spring framework for backend and React.js
+for frontend that I have developed.
+It provides for JWT user authentication and authorization, and fully CRUD operations
+by using most common Spring 
 framework libraries **Spring Security, Spring Web, Spring Data JPA,
 Spring JDBC** for backend and **React**, **ReactRouter** 
 and **Chakra** technologies for frontend, and also **Postgres** as a database. \
