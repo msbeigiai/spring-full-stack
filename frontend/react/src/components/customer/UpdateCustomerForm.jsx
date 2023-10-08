@@ -1,6 +1,6 @@
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
-import {Alert, AlertIcon, Box, Button, FormLabel, Image, Input, Select, Stack, VStack} from "@chakra-ui/react";
+import {Alert, AlertIcon, Box, Button, FormLabel, Image, Input, Stack, VStack} from "@chakra-ui/react";
 import {customerProfilePictureUrl, updateCustomer} from "../../services/client.js";
 import {errorNotification, successNotification} from "../../services/notification.js";
 import MyDropzone from "./MyDropzone.jsx";
@@ -89,7 +89,7 @@ const UpdateCustomerForm = ({ fetchCustomers, initialValues, customerId }) => {
                                 placeholder="jane@formik.com"
                             />
                             <MyTextInput
-                                label="Aeg"
+                                label="Age"
                                 name="age"
                                 type="number"
                                 placeholder="20"
