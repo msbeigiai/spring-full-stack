@@ -22,9 +22,9 @@ const AuthProvider = ({ children }) => {
         setCustomerFromToken();
     }, []);
 
-    const login = async (usernameAnsPassword) => {
+    const login = async (usernameAndPassword) => {
         return new Promise((resolve, reject) => {
-            performLogin(usernameAnsPassword).then(res => {
+            performLogin(usernameAndPassword).then(res => {
                 const jwtToken = res.headers["authorization"];
                 localStorage.setItem("access_token", jwtToken);
 

@@ -35,7 +35,7 @@ const Customer = () => {
     if (loading) {
         return (
             <SidebarWithHeader>
-                <Spinner />
+                <Spinner/>
             </SidebarWithHeader>
         )
     }
@@ -44,7 +44,7 @@ const Customer = () => {
         return (
             <SidebarWithHeader>
                 <CreateCustomerDrawer
-                    fetchCustomers = {fetchCustomers}
+                    fetchCustomers={fetchCustomers}
                 />
                 <Text mt={5}>Oooops, there was an error!</Text>
             </SidebarWithHeader>
@@ -55,7 +55,7 @@ const Customer = () => {
         return (
             <SidebarWithHeader>
                 <CreateCustomerDrawer
-                    fetchCustomers = {fetchCustomers}
+                    fetchCustomers={fetchCustomers}
                 />
                 <Text mt={5}>No customers available!</Text>
             </SidebarWithHeader>
@@ -65,7 +65,7 @@ const Customer = () => {
     return (
         <SidebarWithHeader>
             <CreateCustomerDrawer
-                fetchCustomers = {fetchCustomers}
+                fetchCustomers={fetchCustomers}
             />
             <Wrap spacing="35px" justify="center">
                 {customers.map((customer, index) => (
@@ -73,7 +73,7 @@ const Customer = () => {
                         <CardWithImage
                             {...customer}
                             imageNumber={index}
-                            fetchCustomers = {fetchCustomers}
+                            fetchCustomers={fetchCustomers}
                         />
                     </WrapItem>
                 ))}
